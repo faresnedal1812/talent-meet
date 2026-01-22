@@ -9,6 +9,11 @@ import { serve } from "inngest/express";
 const app = express();
 
 app.use(express.json({ limit: "10mb" }));
+
+if (!ENV.CLIENT_URL) {
+  console.warn("⚠️ CLIENT_URL is not set. CORS may allow all origins.");
+}
+
 // credentials: true => mean: server is allow to browser to send cookie on the request
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 
