@@ -46,9 +46,15 @@ const updateProfileImage = inngest.createFunction(
   async ({ event }) => {
     await connectDB();
 
-    const { id, image_url } = event.data;
+    const { id, image_url, first_name, last_name } = event.data;
 
-    await User.findOneAndUpdate({ clerkId: id }, { profileImage: image_url });
+    await User.findOneAndUpdate(
+      { clerkId: id },
+      {
+        profileImage: image_url,
+        name: `${first_name || ""} ${last_name || ""}`.trim() || "Unknown",
+      },
+    );
 
     // todo: do sth else
   },
