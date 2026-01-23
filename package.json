@@ -18,8 +18,5 @@
   "bugs": {
     "url": "https://github.com/faresnedal1812/talent-meet/issues"
   },
-  "homepage": "https://github.com/faresnedal1812/talent-meet#readme",
-  "dependencies": {
-    "stream-chat": "^9.29.0"
-  }
+  "homepage": "https://github.com/faresnedal1812/talent-meet#readme"
 }
