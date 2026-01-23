@@ -44,9 +44,10 @@ const deleteUserFromDB = inngest.createFunction(
       await connectDB();
 
       const { id } = event.data; // clerk user id
-      await User.findOneAndDelete({ clerkId: id });
-
+      // you should delete the user from stream before deleting it from DB
       await deleteStreamUser(id.toString());
+
+      await User.findOneAndDelete({ clerkId: id });
     } catch (error) {
       console.error(
         "Error in delete-user-from-db inngest process:",
@@ -57,7 +58,7 @@ const deleteUserFromDB = inngest.createFunction(
 );
 
 const updateUserProfile = inngest.createFunction(
-  { id: "update-user-profile" },
+  { id: "update-profile-image" },
   { event: "clerk/user.updated" },
   async ({ event }) => {
     try {
