@@ -5,10 +5,14 @@ import path from "path";
 import cors from "cors";
 import { inngest, functions } from "./lib/inngest.js";
 import { serve } from "inngest/express";
+import { clerkMiddleware } from "@clerk/express";
+import chatRoutes from "./routes/chat.route.js";
 
 const app = express();
 
 app.use(express.json({ limit: "10mb" }));
+// to add auth() method to request object => req.auth() that returnd auth object
+app.use(clerkMiddleware());
 
 if (!ENV.CLIENT_URL) {
   console.warn("⚠️ CLIENT_URL is not set. CORS may allow all origins.");
@@ -25,6 +29,8 @@ const PORT = ENV.PORT || 3000;
 app.get("/health", (req, res) => {
   res.status(200).json({ msg: "API is working successfully" });
 });
+
+app.use("/api/chat", chatRoutes);
 
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
