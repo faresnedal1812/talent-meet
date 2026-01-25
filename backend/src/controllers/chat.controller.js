@@ -1,6 +1,6 @@
 import { chatClient } from "../lib/stream.js";
 
-export const createStreamToken = async (req, res) => {
+export const getStreamToken = async (req, res) => {
   try {
     // use clerkId for Stream token (not mongodb _id)=> it should match the id we have in the stream dashboard
     const token = chatClient.createToken(req.user.clerkId); // token is nessesary for video calling and send messages over stream
