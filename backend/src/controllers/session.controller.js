@@ -5,7 +5,7 @@ export const createSession = async (req, res) => {
   try {
     const { problem, difficulty } = req.body;
 
-    if (!problem || difficulty) {
+    if (!problem || !difficulty) {
       return res
         .status(400)
         .json({ message: "Problem and difficulty are required" });
@@ -16,6 +16,13 @@ export const createSession = async (req, res) => {
 
     const callId = `session_${Date.now()}_${Math.random().toString(36).substring(2)}`;
 
+    // create session in db
+    const session = await Session.create({
+      problem,
+      difficulty,
+      host: userId,
+      callId,
+    });
     // create stream video call
     await streamClient.video.call("default", callId).getOrCreate({
       data: {
@@ -33,14 +40,6 @@ export const createSession = async (req, res) => {
     });
 
     await channel.create();
-
-    // create session in db
-    const session = await Session.create({
-      problem,
-      difficulty,
-      host: userId,
-      callId,
-    });
 
     res.status(201).json(session);
   } catch (error) {
@@ -126,17 +125,20 @@ export const joinSession = async (req, res) => {
         .json({ message: "Host cannot join their own session as participant" });
     }
 
-    if (session.participant) {
-      return res.status(403).json({ message: "Session is full" });
-    }
+    const updatedSession = await Session.findOneAndUpdate(
+      {
+        _id: sessionId,
+        participant: null,
+        status: "active",
+      },
+      { participant: userId },
+      { new: true },
+    );
 
     const channel = chatClient.channel("messaging", session.callId);
     await channel.addMembers([clerkId]);
 
-    session.participant = userId;
-    await session.save();
-
-    res.status(200).json(session);
+    res.status(200).json(updatedSession);
   } catch (error) {
     console.log("Error in joinSession controller:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
