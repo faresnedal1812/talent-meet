@@ -3,11 +3,11 @@ import HomePage from "./pages/HomePage";
 import DashboardPage from "./pages/DashboardPage";
 import ProblemsPage from "./pages/ProblemsPage";
 import { useUser } from "@clerk/clerk-react";
-import LoaderSpinner from "./components/LoaderSpinner";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 const App = () => {
   const { isSignedIn, isLoaded } = useUser();
-  if (!isLoaded) return <LoaderSpinner />;
+  if (!isLoaded) return <LoadingSpinner />;
   return (
     <Routes>
       <Route
