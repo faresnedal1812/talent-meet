@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 // duration: 1, repeat: Infinity, ease: "linear"
-const LoaderSpinner = () => {
+const LoadingSpinner = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-base-100 via-base-200 to-base-300 flex items-center justify-center">
       <motion.div
@@ -12,4 +12,4 @@ const LoaderSpinner = () => {
   );
 };
 
-export default LoaderSpinner;
+export default LoadingSpinner;

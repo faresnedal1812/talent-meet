@@ -16,7 +16,10 @@ const HomePage = () => {
       {/* NAVBAR */}
       <nav className="bg-base-100/80 backdrop-blur-md sticky top-0 border-b border-primary/20 shadow-lg z-50">
         <div className="max-w-7xl mx-auto p-4 flex items-center justify-between">
-          <Link to={"/"}>
+          <Link
+            to={"/"}
+            className="hover:scale-105 transition-transform duration-200"
+          >
             <div className="flex items-center gap-3">
               <div className="bg-gradient-to-r from-primary via-secondary to-accent size-12 rounded-2xl flex items-center justify-center">
                 <SparklesIcon className="text-white size-6" />
