@@ -44,8 +44,8 @@ const DashboardPage = () => {
     );
   };
 
-  const activeSessionsCount = activeSessions?.length || [];
-  const myRecentSessionsCount = myRecentSessions?.length || [];
+  const activeSessionsCount = activeSessions?.length || 0;
+  const myRecentSessionsCount = myRecentSessions?.length || 0;
 
   const isUserInSession = (session) => {
     if (!user.id) return false;

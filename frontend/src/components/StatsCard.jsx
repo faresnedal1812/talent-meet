@@ -42,7 +42,7 @@ const StatsCard = ({ activeSessionsCount, myRecentSessionsCount }) => {
           </div>
           <div className="flex flex-col gap-3">
             <span className="font-black text-base-content text-3xl">
-              {activeSessionsCount}
+              {myRecentSessionsCount}
             </span>
             <span className="font-medium text-sm text-base-content/70">
               Total Sessions
