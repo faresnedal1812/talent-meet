@@ -3,8 +3,8 @@ import { protectRoute } from "./../middlewares/protectRoute.middleware.js";
 import {
   createSession,
   endSession,
-  getActiveSession,
-  getMyRecentSession,
+  getActiveSessions,
+  getMyRecentSessions,
   getSessionById,
   joinSession,
 } from "../controllers/session.controller.js";
@@ -12,8 +12,8 @@ import {
 const router = express.Router();
 
 router.post("/", protectRoute, createSession);
-router.get("/active", protectRoute, getActiveSession);
-router.get("/my-recent", protectRoute, getMyRecentSession);
+router.get("/active", protectRoute, getActiveSessions);
+router.get("/my-recent", protectRoute, getMyRecentSessions);
 
 router.get("/:id", protectRoute, getSessionById);
 router.post("/:id/join", protectRoute, joinSession);

@@ -48,7 +48,7 @@ export const createSession = async (req, res) => {
   }
 };
 
-export const getActiveSession = async (req, res) => {
+export const getActiveSessions = async (req, res) => {
   try {
     const sessions = await Session.find({ status: "active" })
       .populate("host", "name email profileImage clerkId")
@@ -63,7 +63,7 @@ export const getActiveSession = async (req, res) => {
   }
 };
 
-export const getMyRecentSession = async (req, res) => {
+export const getMyRecentSessions = async (req, res) => {
   try {
     const userId = req.user._id;
     const sessions = await Session.find({
