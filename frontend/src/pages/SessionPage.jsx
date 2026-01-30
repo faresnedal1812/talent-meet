@@ -82,11 +82,17 @@ const SessionPage = () => {
   };
 
   const handleRunCode = async () => {
-    setIsRunning(true);
-    setOutput(null);
-    const result = await executeCode(selectedLanguage, code);
-    setOutput(result);
-    setIsRunning(false);
+    try {
+      setIsRunning(true);
+      setOutput(null);
+      const result = await executeCode(selectedLanguage, code);
+      setOutput(result);
+      setIsRunning(false);
+    } catch (error) {
+      setOutput({ error: error.message || "Failed to execute code" });
+    } finally {
+      setIsRunning(false);
+    }
   };
 
   const handleEndSession = () => {
