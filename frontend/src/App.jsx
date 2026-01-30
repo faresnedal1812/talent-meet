@@ -1,11 +1,12 @@
-import { Routes, Route, Navigate } from "react-router";
-import HomePage from "./pages/HomePage";
-import DashboardPage from "./pages/DashboardPage";
-import ProblemsPage from "./pages/ProblemsPage";
 import { useUser } from "@clerk/clerk-react";
-import LoadingSpinner from "./components/LoadingSpinner";
-import ProblemDetailsPage from "./pages/ProblemDetailsPage";
 import { Toaster } from "react-hot-toast";
+import { Navigate, Route, Routes } from "react-router";
+import LoadingSpinner from "./components/LoadingSpinner";
+import DashboardPage from "./pages/DashboardPage";
+import HomePage from "./pages/HomePage";
+import ProblemDetailsPage from "./pages/ProblemDetailsPage";
+import ProblemsPage from "./pages/ProblemsPage";
+import SessionPage from "./pages/SessionPage";
 
 const App = () => {
   const { isSignedIn, isLoaded } = useUser();
@@ -28,6 +29,10 @@ const App = () => {
         <Route
           path="/problems/:id"
           element={isSignedIn ? <ProblemDetailsPage /> : <Navigate to={"/"} />}
+        />
+        <Route
+          path="/session/:id"
+          element={isSignedIn ? <SessionPage /> : <Navigate to={"/"} />}
         />
       </Routes>
 
