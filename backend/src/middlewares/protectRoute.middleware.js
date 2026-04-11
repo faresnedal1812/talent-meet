@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
-import { requireAuth } from "@clerk/express";
+import { requireAuth, clerkClient } from "@clerk/express";
+import { upsertStreamUser } from "../lib/stream.js";
 
 export const protectRoute = [
   requireAuth(),
@@ -13,7 +14,35 @@ export const protectRoute = [
           .json({ message: "Unauthorized - Invalid token" });
       }
 
-      const user = await User.findOne({ clerkId });
+      let user = await User.findOne({ clerkId });
+
+      if (!user) {
+        // Fallback: If Inngest sync failed or was delayed, sync user manually.
+        try {
+          const clerkUser = await clerkClient.users.getUser(clerkId);
+          const newUser = {
+            clerkId,
+            name:
+              `${clerkUser.firstName || ""} ${clerkUser.lastName || ""}`.trim() ||
+              "Unknown",
+            email: clerkUser.emailAddresses[0]?.emailAddress,
+            profileImage: clerkUser.imageUrl,
+          };
+          user = await User.create(newUser);
+
+          await upsertStreamUser({
+            id: user.clerkId.toString(),
+            name: user.name,
+            image: user.profileImage,
+          });
+        } catch (syncError) {
+          console.error(
+            "Error during manual user sync fallback:",
+            syncError.message,
+          );
+        }
+      }
+
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
